@@ -1,16 +1,40 @@
-console.log("hello world!");
+// Main deck Variables
+const deckOfCards = [];
+const suits = ['spade', 'heart', 'diamond', 'club'];
+
+// Players hand Variables
+const playersHand = [];
+
+// Dealer hand Variables
+const dealersHand = [];
+
+// Element Variables
+const startButton = document.getElementById("startButton");
+
+// Creates a random number from 0 to our Max parameter.
+function getRandNum(max) {
+    return Math.floor(Math.random() * max)
+}
+
+// Creates a random number from 0 to the size of our deck.
+function getRandCard(deck) {
+    return deckOfCards[getRandNum(deck.length)]
+}
 
 function startGame() {
+    // console.log("Dealers Hand: ", dealToDealer());
+    console.log("Players Hand: ", dealToPlayer());
 
 }
 
+// Creates 4 suits, 13 cards for each suit and 52 total cards.
 function createDeck() {
-    deckOfCards = [];
-    suits = ['spade', 'heart', 'diamond', 'club'];
-    
-    // For every suit create 13 cards from Ace to King
+
+    // For every suit create 13 cards from Ace to King.
     suits.forEach(suit => {
-        const createCards = [
+
+        // Push all cards into our deckOfCards array.
+        deckOfCards.push(
             { Ace: suit },
             { 2: suit },
             { 3: suit },
@@ -24,13 +48,29 @@ function createDeck() {
             { Jack: suit },
             { Queen: suit },
             { King: suit },
-
-        ];
-        deckOfCards.push(createCards);
+        );
     });
-
-    console.log(deckOfCards);
+    return deckOfCards;
 }
 
-createDeck();
+
+// Deal 1 Random Card within our Deck Of Cards array to the Player
+
+function dealToPlayer() {
+    const randCard = getRandCard(deckOfCards);
+    playersHand.push(randCard)
+    return playersHand;
+}
+
+// Deal 1 Random Card within our Deck Of Cards array to the Dealer
+function dealToDealer() {
+    const randCard = getRandCard(deckOfCards);
+    dealersHand.push(randCard);
+    return dealersHand;
+}
+
+
+console.log("Deck Of Cards: ", createDeck());
+startButton.addEventListener("click", startGame);
+
 
