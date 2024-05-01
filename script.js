@@ -1,5 +1,5 @@
 // Main deck Variables
-const deckOfCards = [];
+let deckOfCards = [];
 const suits = ['spade', 'heart', 'diamond', 'club'];
 
 // Players hand Variables
@@ -90,7 +90,7 @@ function dealToDealer() {
 function promptIfAce() {
     const valueOfAce = prompt("Would you like your ace to be a 1 or an 11?");
 
-    if(parseInt(valueOfAce) === 1 || parseInt(valueOfAce) === 11) {
+    if (parseInt(valueOfAce) === 1 || parseInt(valueOfAce) === 11) {
         alert(`Good choice! You picked ${valueOfAce}`);
         return valueOfAce;
     } else {
@@ -103,7 +103,7 @@ function getHandValue(hand, i) {
     let totalValue = 0;
     hand.forEach(card => {
         let value = Object.keys(card);
-        switch(value[0]) {
+        switch (value[0]) {
             case "Jack":
                 value[0] = 10;
                 break;
@@ -114,17 +114,16 @@ function getHandValue(hand, i) {
                 value[0] = 10;
                 break;
             case "Ace":
-                value[0] = promptIfAce();;
+                value[0] = promptIfAce();
                 break;
             default:
                 value[0] = value[0];
-            
+
         }
-        console.log(value)
         totalValue += parseInt(value[0]);
-        console.log(totalValue)
 
     });
+    return totalValue;
 }
 
 function addGameControls() {
@@ -137,13 +136,45 @@ function addGameControls() {
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
-        console.log(playersHand);
-        getHandValue(playersHand);
+
+        // console.log("Players Hand: ", playersHand)
+
+        // If the value of players hand is greater than 21 end the game and tell the player they've bust
+
+        if (getHandValue(playersHand) > 21) {
+            console.log(playersHand);
+            alert("You bust! ");
+            
+            restartGame();
+
+            // If the value of players hand is equal to 21 end the game and tell the player they've won
+        } else if (getHandValue(playersHand) === 21) {
+            console.log(playersHand);
+            alert("BlackJack! You Won!");
+            
+            restartGame();
+        }
+
     })
 }
+
+function restartGame() {
+    // Empty deckOfCards array.
+    deckOfCards.splice(0)
+    // And push a new set of 52 cards back in.
+    createDeck();
+
+    console.log("Fresh Set of Cards: ", deckOfCards)
+
+
+}
+
+
 
 
 console.log("Deck Of Cards: ", createDeck());
 startButton.addEventListener("click", startGame);
+
+
 
 
