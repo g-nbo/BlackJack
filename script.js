@@ -9,11 +9,16 @@ const playersHand = [];
 const dealersHand = [];
 
 // Element Variables
+// Player Buttons
 const startButton = document.getElementById("startButton");
 const playerButtons = document.querySelectorAll(".playerButtons");
 const hitButton = document.getElementById("hitButton");
 const standButton = document.getElementById("standButton");
 const doubleDownButton = document.getElementById("doubleDownButton");
+// Info Display Variables
+
+
+
 
 // Creates a random number from 0 to our Max parameter.
 function getRandNum(max) {
@@ -95,6 +100,7 @@ function promptIfAce() {
         return valueOfAce;
     } else {
         alert("ERROR: Pick either 1 or 11!")
+        // Loop back through promptIfAce function until user gives 1 or 11
         return promptIfAce();
     }
 }
@@ -137,22 +143,34 @@ function addGameControls() {
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
 
-        // console.log("Players Hand: ", playersHand)
+        console.log("Players Hand: ", playersHand)
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
-
-        if (getHandValue(playersHand) > 21) {
+        const playersValue = getHandValue(playersHand);
+        if (playersValue > 21) {
             console.log(playersHand);
-            alert("You bust! ");
-            
+            // alert("You bust!");
+            console.log("restart the game!");
             restartGame();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
-        } else if (getHandValue(playersHand) === 21) {
+        } else if (playersValue === 21) {
             console.log(playersHand);
             alert("BlackJack! You Won!");
-            
+
             restartGame();
+        }
+
+    })
+
+    standButton.addEventListener("click", (event) => {
+        const playersValue = getHandValue(playersHand);
+        const dealersValue = getHandValue(dealersHand);
+
+        if(21 - playersValue <= 21 - dealersValue) {
+            alert("Player Wins!");
+        } else {
+            alert("Player Loses!");
         }
 
     })
@@ -161,10 +179,12 @@ function addGameControls() {
 function restartGame() {
     // Empty deckOfCards array.
     deckOfCards.splice(0)
-    // And push a new set of 52 cards back in.
+    // push a new set of 52 cards back in to deckOfCards.
     createDeck();
 
-    console.log("Fresh Set of Cards: ", deckOfCards)
+    // playersHand.splice(0)
+    // dealersHand.splice(0)
+    console.log("Fresh Set of Cards: ", deckOfCards);
 
 
 }
