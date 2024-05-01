@@ -1,11 +1,15 @@
 body {
     background-color: rgb(46, 46, 46);
+}
+
+#mainContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     gap: 10px;
+    color: wheat;
 }
 
 #startButton {
@@ -20,6 +24,10 @@ body {
     display: none;
 }
 
+#displayInfo {
+    display: none;
+}
+
 #hitButton {
     
 }
@@ -30,5 +38,13 @@ body {
 
 #doubleDownButton {
     
+}
+
+h3, h2 {
+    margin-bottom: 0;
+}
+
+h3 {
+    margin-top: 0;
 }
 

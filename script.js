@@ -15,7 +15,16 @@ const playerButtons = document.querySelectorAll(".playerButtons");
 const hitButton = document.getElementById("hitButton");
 const standButton = document.getElementById("standButton");
 const doubleDownButton = document.getElementById("doubleDownButton");
+
 // Info Display Variables
+const displayInfo = document.getElementById("displayInfo")
+
+const gameOutcome = document.getElementById("gameOutcome");
+const playersCards = document.getElementById("playersCards");
+const dealersCards = document.getElementById("dealersCards");
+
+const playersPoints = document.getElementById("playersPoints");
+const dealersPoints = document.getElementById("dealersPoints");
 
 
 
@@ -43,7 +52,20 @@ function startGame() {
     // Hide Start Game button from user
     startButton.style.display = "none";
     // Add Game Controls Buttons
+    const playersValue = getHandValue(playersHand);
+    const dealersValue = getHandValue(dealersHand);
+    
+    const dealersHandForEyes = showCards(dealersHand);
+    const playerHandForEyes = showCards(playersHand);
+
+    playersCards.innerHTML = playerHandForEyes;
+    playersPoints.innerHTML = playersValue;
+
+    dealersCards.innerHTML = dealersHandForEyes;
+    dealersPoints.innerHTML = dealersValue;
+    displayInfo.style.display = "block";
     addGameControls();
+
 }
 
 // Creates 4 suits, 13 cards for each suit and 52 total cards.
@@ -142,22 +164,24 @@ function addGameControls() {
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
+        const playersValue = getHandValue(playersHand);
 
+        playersCards.innerHTML = playersValue
         console.log("Players Hand: ", playersHand)
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
-        const playersValue = getHandValue(playersHand);
         if (playersValue > 21) {
             console.log(playersHand);
             // alert("You bust!");
             console.log("restart the game!");
+            gameOutcome.textContent = "You lose!!"
             restartGame();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             console.log(playersHand);
             alert("BlackJack! You Won!");
-
+            gameOutcome.textContent = "You win!";
             restartGame();
         }
 
@@ -167,7 +191,7 @@ function addGameControls() {
         const playersValue = getHandValue(playersHand);
         const dealersValue = getHandValue(dealersHand);
 
-        if(21 - playersValue <= 21 - dealersValue) {
+        if (21 - playersValue <= 21 - dealersValue) {
             alert("Player Wins!");
         } else {
             alert("Player Loses!");
@@ -176,12 +200,14 @@ function addGameControls() {
     })
 }
 
+// Reset all game values and info back to default
 function restartGame() {
     // Empty deckOfCards array.
     deckOfCards.splice(0)
     // push a new set of 52 cards back in to deckOfCards.
     createDeck();
 
+    // Empty player and dealers hands
     // playersHand.splice(0)
     // dealersHand.splice(0)
     console.log("Fresh Set of Cards: ", deckOfCards);
@@ -189,6 +215,16 @@ function restartGame() {
 
 }
 
+//
+function showCards(hand) {
+    let titleOfCard = "<hr/>";
+    hand.forEach((card) => {
+        titleOfCard += Object.keys(card);
+        titleOfCard += " of " + Object.values(card) + '<br/>';
+        
+    })
+    return titleOfCard;
+}
 
 
 

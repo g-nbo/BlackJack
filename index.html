@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,27 @@
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
 </head>
+
 <body>
-    <button id="startButton">Start Game</button>
-    <button id="hitButton" class="playerButtons">Hit</button>
-    <button id="standButton" class="playerButtons">Stand</button>
-    <button id="doubleDownButton" class="playerButtons">Double Down</button>
+    <div id="mainContainer">
+        <div id="displayInfo">
+            <h1><span id="gameOutcome"></span></h1>
+            <h2>Players Cards: <br /><span id="playersCards"></span></h2>
+            <h3>Players Points: <span id="playersPoints"></span> </h3>
+            <h2>Dealers Cards: <br /><span id="dealersCards"></span></h2>
+            <h3>Dealers Points: <span id="dealersPoints"></span> </h3>
+        </div>
+
+        <div>
+            <button id="startButton">Start Game</button>
+        </div>
+
+        <div id="gameControlsDiv">
+            <button id="hitButton" class="playerButtons">Hit</button>
+            <button id="standButton" class="playerButtons">Stand</button>
+            <button id="doubleDownButton" class="playerButtons">Double Down</button>
+        </div>
+    </div>
 </body>
+
 </html>
