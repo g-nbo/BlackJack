@@ -67,7 +67,7 @@ function createDeck() {
     return deckOfCards;
 }
 
-
+// Removes a card from our deckOfCards array and gives that card to another array "hand".
 function giveRandCard(hand) {
     const randCard = getRandCard(deckOfCards);
     hand.push(randCard);
@@ -86,6 +86,47 @@ function dealToDealer() {
     return giveRandCard(dealersHand);
 }
 
+// Improve this functionality later if you have time, Ace should have the ability to be 1 and 11 at the same time, whatever benefits the user more.
+function promptIfAce() {
+    const valueOfAce = prompt("Would you like your ace to be a 1 or an 11?");
+
+    if(parseInt(valueOfAce) === 1 || parseInt(valueOfAce) === 11) {
+        alert(`Good choice! You picked ${valueOfAce}`);
+        return valueOfAce;
+    } else {
+        alert("ERROR: Pick either 1 or 11!")
+        return promptIfAce();
+    }
+}
+
+function getHandValue(hand, i) {
+    let totalValue = 0;
+    hand.forEach(card => {
+        let value = Object.keys(card);
+        switch(value[0]) {
+            case "Jack":
+                value[0] = 10;
+                break;
+            case "Queen":
+                value[0] = 10;
+                break;
+            case "King":
+                value[0] = 10;
+                break;
+            case "Ace":
+                value[0] = promptIfAce();;
+                break;
+            default:
+                value[0] = value[0];
+            
+        }
+        console.log(value)
+        totalValue += parseInt(value[0]);
+        console.log(totalValue)
+
+    });
+}
+
 function addGameControls() {
 
     // Show Users game control buttons (hit stand and double down)
@@ -93,10 +134,11 @@ function addGameControls() {
         button.style.display = 'block'
     });
 
+    // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
         console.log(playersHand);
-        console.log(deckOfCards);
+        getHandValue(playersHand);
     })
 }
 
