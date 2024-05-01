@@ -162,14 +162,11 @@ function getHandValue(hand, i) {
 }
 
 function addGameControls() {
-    console.log("Game controls is running!");
-    // Show Users game control buttons (hit stand and double down)
-    
+
 
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
-        console.log("We've been hit!");
         const dealerHandDisplay = showCards(dealersHand);
         const playerHandDisplay = showCards(playersHand);
 
@@ -181,21 +178,18 @@ function addGameControls() {
 
         dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
-        console.log("Players Hand: ", playersHand)
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
-            console.log(playersHand);
             gameOutcome.textContent = "You Bust! You lose!"
             createRestartButton();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
-            console.log(playersHand);
             gameOutcome.textContent = "BlackJack! You win!";
             createRestartButton();
         }
-
+        console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 
     standButton.addEventListener("click", (event) => {
@@ -204,7 +198,7 @@ function addGameControls() {
         const playersValue = getHandValue(playersHand);
         let dealersValue = getHandValue(dealersHand);
 
-        const dealerHandDisplay = showCards(dealersHand);
+        let dealerHandDisplay = showCards(dealersHand);
         const playerHandDisplay = showCards(playersHand);
 
         playersCards.innerHTML = playerHandDisplay;
@@ -213,12 +207,16 @@ function addGameControls() {
         dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
 
-        if (dealersValue <= playersValue && dealersValue < 21) {
+        while (dealersValue < 21 && dealersValue <= playersValue) {
             dealToDealer();
             dealersValue = getHandValue(dealersHand);
+            dealerHandDisplay = showCards(dealersHand);
             dealersCards.innerHTML = dealerHandDisplay;
             dealersPoints.innerHTML = dealersValue;
-        } else if (playersValue >= dealersValue) {
+        }
+
+
+        if (playersValue >= dealersValue) {
 
             gameOutcome.textContent = "You win!";
             createRestartButton();
@@ -229,12 +227,13 @@ function addGameControls() {
 
             gameOutcome.textContent = "Dealer Bust! You Win!";
             createRestartButton();
-        } else if(playersValue < dealersValue){
+        } else if (playersValue < dealersValue) {
 
             gameOutcome.textContent = "You lose!!"
+            dealersCards.innerHTML = dealerHandDisplay;
             createRestartButton();
         }
-
+        console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 }
 
