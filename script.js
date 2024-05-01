@@ -15,6 +15,9 @@ const playerButtons = document.querySelectorAll(".playerButtons");
 const hitButton = document.getElementById("hitButton");
 const standButton = document.getElementById("standButton");
 const doubleDownButton = document.getElementById("doubleDownButton");
+const restartGameButton = document.getElementById("restartGameButton")
+const gameControlsDiv = document.getElementById("gameControlsDiv");
+
 
 // Info Display Variables
 const displayInfo = document.getElementById("displayInfo")
@@ -51,19 +54,23 @@ function startGame() {
 
     // Hide Start Game button from user
     startButton.style.display = "none";
-    // Add Game Controls Buttons
+    // Hide restart Game button
+    restartGameButton.style.display = 'none'
+
+    // Create a function that takes hand as a parameter and does the same thing
+    const dealerHandDisplay = showCards(dealersHand);
+    const playerHandDisplay = showCards(playersHand);
+
     const playersValue = getHandValue(playersHand);
     const dealersValue = getHandValue(dealersHand);
-    
-    const dealersHandForEyes = showCards(dealersHand);
-    const playerHandForEyes = showCards(playersHand);
 
-    playersCards.innerHTML = playerHandForEyes;
+    playersCards.innerHTML = playerHandDisplay;
     playersPoints.innerHTML = playersValue;
 
-    dealersCards.innerHTML = dealersHandForEyes;
+    dealersCards.innerHTML = dealerHandDisplay;
     dealersPoints.innerHTML = dealersValue;
     displayInfo.style.display = "block";
+    // Add Game Controls Buttons
     addGameControls();
 
 }
@@ -116,7 +123,7 @@ function dealToDealer() {
 // Improve this functionality later if you have time, Ace should have the ability to be 1 and 11 at the same time, whatever benefits the user more.
 function promptIfAce() {
     const valueOfAce = prompt("Would you like your ace to be a 1 or an 11?");
-
+    console.log('Ace prompt is running');
     if (parseInt(valueOfAce) === 1 || parseInt(valueOfAce) === 11) {
         alert(`Good choice! You picked ${valueOfAce}`);
         return valueOfAce;
@@ -157,32 +164,39 @@ function getHandValue(hand, i) {
 function addGameControls() {
 
     // Show Users game control buttons (hit stand and double down)
-    playerButtons.forEach(button => {
-        button.style.display = 'block'
-    });
+    gameControlsDiv.style.display = 'block'
 
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
-        const playersValue = getHandValue(playersHand);
 
-        playersCards.innerHTML = playersValue
+        const dealerHandDisplay = showCards(dealersHand);
+        const playerHandDisplay = showCards(playersHand);
+
+        const playersValue = getHandValue(playersHand);
+        const dealersValue = getHandValue(dealersHand);
+
+        playersCards.innerHTML = playerHandDisplay;
+        playersPoints.innerHTML = playersValue;
+
+        dealersCards.innerHTML = dealerHandDisplay;
+        dealersPoints.innerHTML = dealersValue;
         console.log("Players Hand: ", playersHand)
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
             console.log(playersHand);
-            // alert("You bust!");
+            alert("You bust!");
             console.log("restart the game!");
             gameOutcome.textContent = "You lose!!"
-            restartGame();
+            createRestartButton();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             console.log(playersHand);
             alert("BlackJack! You Won!");
             gameOutcome.textContent = "You win!";
-            restartGame();
+            createRestartButton();
         }
 
     })
@@ -191,29 +205,53 @@ function addGameControls() {
         const playersValue = getHandValue(playersHand);
         const dealersValue = getHandValue(dealersHand);
 
+        const dealerHandDisplay = showCards(dealersHand);
+        const playerHandDisplay = showCards(playersHand);
+
+        playersCards.innerHTML = playerHandDisplay;
+        playersPoints.innerHTML = playersValue;
+
+        dealersCards.innerHTML = dealerHandDisplay;
+        dealersPoints.innerHTML = dealersValue;
+
         if (21 - playersValue <= 21 - dealersValue) {
             alert("Player Wins!");
+            gameOutcome.textContent = "You win!";
+            createRestartButton();
+
         } else {
             alert("Player Loses!");
+            gameOutcome.textContent = "You lose!!"
+            createRestartButton();
         }
 
     })
 }
 
 // Reset all game values and info back to default
-function restartGame() {
-    // Empty deckOfCards array.
-    deckOfCards.splice(0)
-    // push a new set of 52 cards back in to deckOfCards.
-    createDeck();
+function createRestartButton() {
+    gameControlsDiv.style.display = 'none'
+    restartGameButton.style.display = 'block';
+    restartGameButton.addEventListener("click", (event) => {
+        // Empty deckOfCards array.
+        deckOfCards.splice(0)
+        // push a new set of 52 cards back in to deckOfCards.
+        createDeck();
 
-    // Empty player and dealers hands
-    // playersHand.splice(0)
-    // dealersHand.splice(0)
-    console.log("Fresh Set of Cards: ", deckOfCards);
+        // Empty player and dealers hands
+        playersHand.splice(0)
+        dealersHand.splice(0)
+        
+        displayInfo.style.display = 'none'
+        gameControlsDiv.style.display = 'none'
+        restartGameButton.style.display = 'none'
+        startButton.style.display = "block"
+    })
+
 
 
 }
+
 
 //
 function showCards(hand) {
@@ -221,7 +259,7 @@ function showCards(hand) {
     hand.forEach((card) => {
         titleOfCard += Object.keys(card);
         titleOfCard += " of " + Object.values(card) + '<br/>';
-        
+
     })
     return titleOfCard;
 }

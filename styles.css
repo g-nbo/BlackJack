@@ -17,10 +17,18 @@ body {
     width: 200px;
 }
 
+#gameControlsDiv {
+    display: none;
+}
+
 .playerButtons {
     height: 80px;
     width: 200px;
-    
+
+
+}
+
+#restartGameButton {
     display: none;
 }
 
