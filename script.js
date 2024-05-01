@@ -71,7 +71,7 @@ function startGame() {
     dealersPoints.innerHTML = dealersValue;
     displayInfo.style.display = "block";
     // Add Game Controls Buttons
-    addGameControls();
+    gameControlsDiv.style.display = 'block'
 
 }
 
@@ -149,7 +149,7 @@ function getHandValue(hand, i) {
                 value[0] = 10;
                 break;
             case "Ace":
-                value[0] = promptIfAce();
+                value[0] = 10;
                 break;
             default:
                 value[0] = value[0];
@@ -162,14 +162,14 @@ function getHandValue(hand, i) {
 }
 
 function addGameControls() {
-
+    console.log("Game controls is running!");
     // Show Users game control buttons (hit stand and double down)
-    gameControlsDiv.style.display = 'block'
+    
 
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
-
+        console.log("We've been hit!");
         const dealerHandDisplay = showCards(dealersHand);
         const playerHandDisplay = showCards(playersHand);
 
@@ -186,24 +186,23 @@ function addGameControls() {
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
             console.log(playersHand);
-            alert("You bust!");
-            console.log("restart the game!");
-            gameOutcome.textContent = "You lose!!"
+            gameOutcome.textContent = "You Bust! You lose!"
             createRestartButton();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             console.log(playersHand);
-            alert("BlackJack! You Won!");
-            gameOutcome.textContent = "You win!";
+            gameOutcome.textContent = "BlackJack! You win!";
             createRestartButton();
         }
 
     })
 
     standButton.addEventListener("click", (event) => {
+        hitButton.style.display = 'none'
+
         const playersValue = getHandValue(playersHand);
-        const dealersValue = getHandValue(dealersHand);
+        let dealersValue = getHandValue(dealersHand);
 
         const dealerHandDisplay = showCards(dealersHand);
         const playerHandDisplay = showCards(playersHand);
@@ -214,13 +213,24 @@ function addGameControls() {
         dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
 
-        if (21 - playersValue <= 21 - dealersValue) {
-            alert("Player Wins!");
+        if (dealersValue <= playersValue && dealersValue < 21) {
+            dealToDealer();
+            dealersValue = getHandValue(dealersHand);
+            dealersCards.innerHTML = dealerHandDisplay;
+            dealersPoints.innerHTML = dealersValue;
+        } else if (playersValue >= dealersValue) {
+
             gameOutcome.textContent = "You win!";
             createRestartButton();
+        }
 
-        } else {
-            alert("Player Loses!");
+
+        if (dealersValue > 21) {
+
+            gameOutcome.textContent = "Dealer Bust! You Win!";
+            createRestartButton();
+        } else if(playersValue < dealersValue){
+
             gameOutcome.textContent = "You lose!!"
             createRestartButton();
         }
@@ -235,13 +245,18 @@ function createRestartButton() {
     restartGameButton.addEventListener("click", (event) => {
         // Empty deckOfCards array.
         deckOfCards.splice(0)
-        // push a new set of 52 cards back in to deckOfCards.
-        createDeck();
 
         // Empty player and dealers hands
         playersHand.splice(0)
         dealersHand.splice(0)
-        
+
+        // push a new set of 52 cards back in to deckOfCards.
+        createDeck();
+
+
+        gameOutcome.textContent = ''
+        hitButton.style.display = 'inline'
+
         displayInfo.style.display = 'none'
         gameControlsDiv.style.display = 'none'
         restartGameButton.style.display = 'none'
@@ -268,7 +283,7 @@ function showCards(hand) {
 
 console.log("Deck Of Cards: ", createDeck());
 startButton.addEventListener("click", startGame);
-
+addGameControls();
 
 
 
