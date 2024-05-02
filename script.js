@@ -311,7 +311,7 @@ function createRestartButton() {
 // Show a visual representation of hand's value to the user
 function showCards(hand) {
 
-    let titleOfCard = "/images/";
+    let titleOfCard = "images/";
 
     // Clears hand before before showing udpated set of cards
     if (hand === playersHand) {
@@ -322,7 +322,7 @@ function showCards(hand) {
 
     // For each card in hand create an image representing its value and append to DOM
     hand.forEach((card) => {
-        titleOfCard = "/images/";
+        titleOfCard = "images/";
         let valueOfCard = JSON.stringify(Object.keys(card))
         let suitOfCard = JSON.stringify(Object.values(card));
 
@@ -343,7 +343,7 @@ function showCards(hand) {
         // If this card is the first card the dealer has been dealt, hide it from the user temporarily by making the image the back of a card
         if (hand === dealersHand && firstDealerCard) {
             firstDealerCard = false;
-            image.setAttribute("src", "/images/red_back.png")
+            image.setAttribute("src", "images/red_back.png");
 
         }
         
