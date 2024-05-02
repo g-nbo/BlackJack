@@ -4,13 +4,14 @@ const suits = ['spade', 'heart', 'diamond', 'club'];
 
 // Players hand Variables
 const playersHand = [];
-let playerHasAce = false;
 let playerNumOfAces = 0;
+let playerMoney = 1000;
+let betAmount = 100;
 
 // Dealer hand Variables
 const dealersHand = [];
-let dealerHasAce = false;
 let dealerNumOfAces = 0;
+let firstDealerCard = true;
 
 // Element Variables
 // Player Buttons
@@ -53,7 +54,6 @@ function startGame() {
     // and 2 cards to the Player
     dealToPlayer();
     dealToPlayer();
-    console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand)
 
 
     // Hide Start Game button from user
@@ -161,19 +161,16 @@ function getHandValue(hand, i) {
                 // if an ace appears store that info with the hand that has it
                 if (hand === dealersHand) {
                     dealerNumOfAces = 0;
-                    dealerHasAce = true;
-
+                    
                     hand.forEach((card) => {
                         if (JSON.stringify(Object.keys(card)) === '["Ace"]') {
 
                             dealerNumOfAces++;
                         }
                     })
-                    console.log('dealer aces:', dealerNumOfAces);
                 }
                 if (hand === playersHand) {
                     playerNumOfAces = 0;
-                    playerHasAce = true;
 
                     hand.forEach((card) => {
                         if (JSON.stringify(Object.keys(card)) === '["Ace"]') {
@@ -181,10 +178,9 @@ function getHandValue(hand, i) {
                             playerNumOfAces++;
                         }
                     })
-                    console.log('player aces:', playerNumOfAces);
                 }
                 value[0] = 11;
-                // Ace = 1 until we want it to equal 11
+                // Ace = 11 until hand value is over 21
                 break;
             default:
                 value[0] = value[0];
@@ -200,7 +196,7 @@ function getHandValue(hand, i) {
 function addGameControls() {
 
 
-    // Give player a new card everytime they click this button then check if bust or not
+    // Give player a new card everytime they click this button then check if bust (lose) or Blackjack (win)
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
 
@@ -218,11 +214,6 @@ function addGameControls() {
         // dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
 
-        if (playersValue > 21 && playerHasAce) {
-            playersValue -= 10;
-            playersPoints.innerHTML = playersValue;
-        }
-
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
             gameOutcome.textContent = "You Bust! You lose!"
@@ -239,10 +230,10 @@ function addGameControls() {
             dealersPoints.style.display = 'inline'
             createRestartButton();
         }
-
-        console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 
+
+    // 
     standButton.addEventListener("click", (event) => {
         hitButton.style.display = 'none'
 
@@ -260,7 +251,6 @@ function addGameControls() {
 
             dealersValue = getHandValue(dealersHand);
             for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
-                console.log("foor loop ran")
                 dealersValue -= 10;
             }
             showCards(dealersHand);
@@ -291,8 +281,6 @@ function addGameControls() {
         showCards(dealersHand);
         dealersPoints.style.display = 'inline';
 
-
-        console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 }
 
@@ -311,11 +299,9 @@ function createRestartButton() {
         // push a new set of 52 cards back in to deckOfCards.
         createDeck();
 
+
         firstDealerCard = true;
         dealersPoints.style.display = 'none';
-
-        playerHasAce = false;
-        dealerHasAce = false;
 
         playerNumOfAces = 0;
         dealerNumOfAces = 0;
@@ -335,17 +321,20 @@ function createRestartButton() {
 
 }
 
-let firstDealerCard = true;
+
+// Show a visual representation of hand's value to the user
 function showCards(hand) {
 
     let titleOfCard = "../images/";
 
+    // Clears hand before before showing udpated set of cards
     if (hand === playersHand) {
         playersCards.innerHTML = '';
     } else if (hand === dealersHand) {
         dealersCards.innerHTML = '';
     }
 
+    // For each card in hand create an image representing its value and append to DOM
     hand.forEach((card) => {
         titleOfCard = "../images/";
         let valueOfCard = JSON.stringify(Object.keys(card))
@@ -364,14 +353,20 @@ function showCards(hand) {
         }
 
         image.setAttribute("src", titleOfCard)
+
+        // If this card is the first card the dealer has been dealt, hide it from the user temporarily by making the image the back of a card
         if (hand === dealersHand && firstDealerCard) {
             firstDealerCard = false;
             image.setAttribute("src", "../images/red_back.png")
 
         }
-        console.log(firstDealerCard)
+        
     })
     return;
+}
+
+function betting() {
+
 }
 
 
