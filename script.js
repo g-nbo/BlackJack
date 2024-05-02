@@ -129,20 +129,6 @@ function dealToDealer() {
     return giveRandCard(dealersHand);
 }
 
-// Improve this functionality later if you have time, Ace should have the ability to be 1 and 11 at the same time, whatever benefits the user more.
-function promptIfAce() {
-    const valueOfAce = prompt("Would you like your ace to be a 1 or an 11?");
-    console.log('Ace prompt is running');
-    if (parseInt(valueOfAce) === 1 || parseInt(valueOfAce) === 11) {
-        alert(`Good choice! You picked ${valueOfAce}`);
-        return valueOfAce;
-    } else {
-        alert("ERROR: Pick either 1 or 11!")
-        // Loop back through promptIfAce function until user gives 1 or 11
-        return promptIfAce();
-    }
-}
-
 function getHandValue(hand, i) {
     let totalValue = 0;
     hand.forEach(card => {
@@ -325,7 +311,7 @@ function createRestartButton() {
 // Show a visual representation of hand's value to the user
 function showCards(hand) {
 
-    let titleOfCard = "../images/";
+    let titleOfCard = "/images/";
 
     // Clears hand before before showing udpated set of cards
     if (hand === playersHand) {
@@ -336,7 +322,7 @@ function showCards(hand) {
 
     // For each card in hand create an image representing its value and append to DOM
     hand.forEach((card) => {
-        titleOfCard = "../images/";
+        titleOfCard = "/images/";
         let valueOfCard = JSON.stringify(Object.keys(card))
         let suitOfCard = JSON.stringify(Object.values(card));
 
@@ -357,7 +343,7 @@ function showCards(hand) {
         // If this card is the first card the dealer has been dealt, hide it from the user temporarily by making the image the back of a card
         if (hand === dealersHand && firstDealerCard) {
             firstDealerCard = false;
-            image.setAttribute("src", "../images/red_back.png")
+            image.setAttribute("src", "/images/red_back.png")
 
         }
         
@@ -371,7 +357,7 @@ function betting() {
 
 
 
-console.log("Deck Of Cards: ", createDeck());
+createDeck();
 startButton.addEventListener("click", startGame);
 addGameControls();
 
