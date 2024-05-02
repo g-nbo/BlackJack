@@ -34,7 +34,7 @@ const dealersCards = document.getElementById("dealersCards");
 const playersPoints = document.getElementById("playersPoints");
 const dealersPoints = document.getElementById("dealersPoints");
 
-
+const moneyAmount = document.getElementById("moneyAmount");
 
 
 // Creates a random number from 0 to our Max parameter.
@@ -190,30 +190,40 @@ function addGameControls() {
         let playersValue = getHandValue(playersHand);
         let dealersValue = getHandValue(dealersHand);
 
-        // playersCards.innerHTML = playerHandDisplay;
+        
         for (i = 0; i < playerNumOfAces && playersValue > 21; i++) {
-            dealersValue -= 10;
+            playersValue -= 10;
         }
         showCards(playersHand)
         playersPoints.innerHTML = playersValue;
 
-        // dealersCards.innerHTML = dealerHandDisplay;
+        
         dealersPoints.innerHTML = dealersValue;
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
-            gameOutcome.textContent = "You Bust! You lose!"
+            gameOutcome.textContent = "You Bust! You lose!";
+
+            dealersValue = getHandValue(dealersHand);
+            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+                dealersValue -= 10;
+            }
             showCards(dealersHand);
-            dealersPoints.innerHTML = getHandValue(dealersHand);
-            dealersPoints.style.display = 'inline'
+            dealersPoints.innerHTML = dealersValue;
+            dealersPoints.style.display = 'inline';
             createRestartButton();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             gameOutcome.textContent = "BlackJack! You win!";
+
+            dealersValue = getHandValue(dealersHand);
+            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+                dealersValue -= 10;
+            }
             showCards(dealersHand);
-            dealersPoints.innerHTML = getHandValue(dealersHand);
-            dealersPoints.style.display = 'inline'
+            dealersPoints.innerHTML = dealersValue;
+            dealersPoints.style.display = 'inline';
             createRestartButton();
         }
     })
@@ -302,9 +312,6 @@ function createRestartButton() {
         restartGameButton.style.display = 'none';
         startButton.style.display = "block";
     })
-
-
-
 }
 
 
@@ -352,7 +359,9 @@ function showCards(hand) {
 }
 
 function betting() {
+    let bet = prompt("How much would you like to bet?");
 
+    moneyAmount.textContent = playerMoney;
 }
 
 
@@ -360,6 +369,7 @@ function betting() {
 createDeck();
 startButton.addEventListener("click", startGame);
 addGameControls();
+
 
 
 
