@@ -4,9 +4,13 @@ const suits = ['spade', 'heart', 'diamond', 'club'];
 
 // Players hand Variables
 const playersHand = [];
+let playerHasAce = false;
+let playerNumOfAces = 0;
 
 // Dealer hand Variables
 const dealersHand = [];
+let dealerHasAce = false;
+let dealerNumOfAces = 0;
 
 // Element Variables
 // Player Buttons
@@ -56,22 +60,27 @@ function startGame() {
     startButton.style.display = "none";
     // Hide restart Game button
     restartGameButton.style.display = 'none'
+    // Hide value of Dealrs hand
+    dealersPoints.style.display = 'none';
 
-    // Create a function that takes hand as a parameter and does the same thing
+    // Create a function that takes hand as a parameter and does these same things
     const dealerHandDisplay = showCards(dealersHand);
     const playerHandDisplay = showCards(playersHand);
 
     const playersValue = getHandValue(playersHand);
     const dealersValue = getHandValue(dealersHand);
 
-    playersCards.innerHTML = playerHandDisplay;
+    // playersCards.innerHTML = playerHandDisplay;
     playersPoints.innerHTML = playersValue;
 
-    dealersCards.innerHTML = dealerHandDisplay;
+    // dealersCards.innerHTML = dealerHandDisplay;
     dealersPoints.innerHTML = dealersValue;
     displayInfo.style.display = "block";
-    // Add Game Controls Buttons
+
+    // Show Game Controls Buttons to the user
     gameControlsDiv.style.display = 'block'
+
+    // Show cards to the user
 
 }
 
@@ -149,13 +158,40 @@ function getHandValue(hand, i) {
                 value[0] = 10;
                 break;
             case "Ace":
-                value[0] = 10;
+                // if an ace appears store that info with the hand that has it
+                if (hand === dealersHand) {
+                    dealerNumOfAces = 0;
+                    dealerHasAce = true;
+
+                    hand.forEach((card) => {
+                        if (JSON.stringify(Object.keys(card)) === '["Ace"]') {
+
+                            dealerNumOfAces++;
+                        }
+                    })
+                    console.log('dealer aces:', dealerNumOfAces);
+                }
+                if (hand === playersHand) {
+                    playerNumOfAces = 0;
+                    playerHasAce = true;
+
+                    hand.forEach((card) => {
+                        if (JSON.stringify(Object.keys(card)) === '["Ace"]') {
+
+                            playerNumOfAces++;
+                        }
+                    })
+                    console.log('player aces:', playerNumOfAces);
+                }
+                value[0] = 11;
+                // Ace = 1 until we want it to equal 11
                 break;
             default:
                 value[0] = value[0];
 
         }
         totalValue += parseInt(value[0]);
+
 
     });
     return totalValue;
@@ -167,72 +203,95 @@ function addGameControls() {
     // Give player a new card everytime they click this button then check if bust or not
     hitButton.addEventListener("click", (event) => {
         dealToPlayer();
-        const dealerHandDisplay = showCards(dealersHand);
-        const playerHandDisplay = showCards(playersHand);
 
-        const playersValue = getHandValue(playersHand);
-        const dealersValue = getHandValue(dealersHand);
 
-        playersCards.innerHTML = playerHandDisplay;
+        let playersValue = getHandValue(playersHand);
+        let dealersValue = getHandValue(dealersHand);
+
+        // playersCards.innerHTML = playerHandDisplay;
+        for (i = 0; i < playerNumOfAces && playersValue > 21; i++) {
+            dealersValue -= 10;
+        }
+        showCards(playersHand)
         playersPoints.innerHTML = playersValue;
 
-        dealersCards.innerHTML = dealerHandDisplay;
+        // dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
+
+        if (playersValue > 21 && playerHasAce) {
+            playersValue -= 10;
+            playersPoints.innerHTML = playersValue;
+        }
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
             gameOutcome.textContent = "You Bust! You lose!"
+            showCards(dealersHand);
+            dealersPoints.innerHTML = getHandValue(dealersHand);
+            dealersPoints.style.display = 'inline'
             createRestartButton();
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             gameOutcome.textContent = "BlackJack! You win!";
+            showCards(dealersHand);
+            dealersPoints.innerHTML = getHandValue(dealersHand);
+            dealersPoints.style.display = 'inline'
             createRestartButton();
         }
+
         console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 
     standButton.addEventListener("click", (event) => {
         hitButton.style.display = 'none'
 
-        const playersValue = getHandValue(playersHand);
+        let playersValue = getHandValue(playersHand);
         let dealersValue = getHandValue(dealersHand);
 
-        let dealerHandDisplay = showCards(dealersHand);
-        const playerHandDisplay = showCards(playersHand);
-
-        playersCards.innerHTML = playerHandDisplay;
-        playersPoints.innerHTML = playersValue;
-
-        dealersCards.innerHTML = dealerHandDisplay;
         dealersPoints.innerHTML = dealersValue;
 
-        while (dealersValue < 21 && dealersValue <= playersValue) {
+
+
+
+
+        while (dealersValue < 21 && dealersValue <= playersValue && playersValue !== 21) {
             dealToDealer();
+
             dealersValue = getHandValue(dealersHand);
-            dealerHandDisplay = showCards(dealersHand);
-            dealersCards.innerHTML = dealerHandDisplay;
+            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+                console.log("foor loop ran")
+                dealersValue -= 10;
+            }
+            showCards(dealersHand);
             dealersPoints.innerHTML = dealersValue;
         }
 
 
-        if (playersValue >= dealersValue) {
 
+        if (playersValue >= dealersValue) {
             gameOutcome.textContent = "You win!";
+
             createRestartButton();
         }
+
 
 
         if (dealersValue > 21) {
 
             gameOutcome.textContent = "Dealer Bust! You Win!";
+
             createRestartButton();
         } else if (playersValue < dealersValue) {
 
             gameOutcome.textContent = "You lose!!"
-            dealersCards.innerHTML = dealerHandDisplay;
+
             createRestartButton();
         }
+        showCards(dealersHand);
+        dealersPoints.style.display = 'inline';
+
+
         console.log('Players Hand: ', playersHand, 'Dealers Hand: ', dealersHand);
     })
 }
@@ -252,30 +311,67 @@ function createRestartButton() {
         // push a new set of 52 cards back in to deckOfCards.
         createDeck();
 
+        firstDealerCard = true;
+        dealersPoints.style.display = 'none';
 
-        gameOutcome.textContent = ''
-        hitButton.style.display = 'inline'
+        playerHasAce = false;
+        dealerHasAce = false;
 
-        displayInfo.style.display = 'none'
-        gameControlsDiv.style.display = 'none'
-        restartGameButton.style.display = 'none'
-        startButton.style.display = "block"
+        playerNumOfAces = 0;
+        dealerNumOfAces = 0;
+
+        playersCards.innerHTML = '';
+        dealersCards.innerHTML = '';
+        gameOutcome.textContent = '';
+        hitButton.style.display = 'inline';
+
+        displayInfo.style.display = 'none';
+        gameControlsDiv.style.display = 'none';
+        restartGameButton.style.display = 'none';
+        startButton.style.display = "block";
     })
 
 
 
 }
 
-
-//
+let firstDealerCard = true;
 function showCards(hand) {
-    let titleOfCard = "<hr/>";
-    hand.forEach((card) => {
-        titleOfCard += Object.keys(card);
-        titleOfCard += " of " + Object.values(card) + '<br/>';
 
+    let titleOfCard = "../images/";
+
+    if (hand === playersHand) {
+        playersCards.innerHTML = '';
+    } else if (hand === dealersHand) {
+        dealersCards.innerHTML = '';
+    }
+
+    hand.forEach((card) => {
+        titleOfCard = "../images/";
+        let valueOfCard = JSON.stringify(Object.keys(card))
+        let suitOfCard = JSON.stringify(Object.values(card));
+
+        titleOfCard += valueOfCard[2].toUpperCase();
+        titleOfCard += suitOfCard[2].toUpperCase();
+        titleOfCard += ".png";
+
+        let image = document.createElement('img');
+
+        if (hand === playersHand) {
+            playersCards.appendChild(image);
+        } else if (hand === dealersHand) {
+            dealersCards.appendChild(image);
+        }
+
+        image.setAttribute("src", titleOfCard)
+        if (hand === dealersHand && firstDealerCard) {
+            firstDealerCard = false;
+            image.setAttribute("src", "../images/red_back.png")
+
+        }
+        console.log(firstDealerCard)
     })
-    return titleOfCard;
+    return;
 }
 
 

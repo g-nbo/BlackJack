@@ -44,3 +44,9 @@ h3 {
     margin-top: 0;
 }
 
+img {
+    width: auto;
+    height: 200px;
+    display: inline;
+}
+
