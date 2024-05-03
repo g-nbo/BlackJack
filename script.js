@@ -20,12 +20,13 @@ const playerButtons = document.querySelectorAll(".playerButtons");
 const hitButton = document.getElementById("hitButton");
 const standButton = document.getElementById("standButton");
 const doubleDownButton = document.getElementById("doubleDownButton");
-const restartGameButton = document.getElementById("restartGameButton")
+const continueGameButton = document.getElementById("continueGameButton")
 const gameControlsDiv = document.getElementById("gameControlsDiv");
-
+const restartGameButton = document.getElementById("restartGameButton");
+const mainHeader = document.getElementById("mainHeader");
 
 // Info Display Variables
-const displayInfo = document.getElementById("displayInfo")
+const displayInfo = document.getElementById("displayInfo");
 
 const gameOutcome = document.getElementById("gameOutcome");
 const playersCards = document.getElementById("playersCards");
@@ -59,9 +60,13 @@ function startGame() {
     // Hide Start Game button from user
     startButton.style.display = "none";
     // Hide restart Game button
-    restartGameButton.style.display = 'none'
+    continueGameButton.style.display = 'none'
     // Hide value of Dealrs hand
-    dealersPoints.style.display = 'none';
+    dealersPoints.style.display = 'inline';
+    // Show player their money
+    moneyAmount.textContent = playerMoney;
+    // Hide Main Header
+    mainHeader.style.display = 'none'
 
     // Create a function that takes hand as a parameter and does these same things
     const dealerHandDisplay = showCards(dealersHand);
@@ -74,7 +79,7 @@ function startGame() {
     playersPoints.innerHTML = playersValue;
 
     // dealersCards.innerHTML = dealerHandDisplay;
-    dealersPoints.innerHTML = dealersValue;
+    dealersPoints.innerHTML = '?';
     displayInfo.style.display = "block";
 
     // Show Game Controls Buttons to the user
@@ -147,7 +152,7 @@ function getHandValue(hand, i) {
                 // if an ace appears store that info with the hand that has it
                 if (hand === dealersHand) {
                     dealerNumOfAces = 0;
-                    
+
                     hand.forEach((card) => {
                         if (JSON.stringify(Object.keys(card)) === '["Ace"]') {
 
@@ -190,14 +195,14 @@ function addGameControls() {
         let playersValue = getHandValue(playersHand);
         let dealersValue = getHandValue(dealersHand);
 
-        
+
         for (i = 0; i < playerNumOfAces && playersValue > 21; i++) {
             playersValue -= 10;
         }
         showCards(playersHand)
         playersPoints.innerHTML = playersValue;
 
-        
+
         dealersPoints.innerHTML = dealersValue;
 
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
@@ -211,7 +216,16 @@ function addGameControls() {
             showCards(dealersHand);
             dealersPoints.innerHTML = dealersValue;
             dealersPoints.style.display = 'inline';
-            createRestartButton();
+
+            playerMoney -= betAmount;
+            createContinueButton();
+            if (playerMoney <= 0) {
+                console.log("you went bankrupt!");
+                restartGameButton.style.display = 'block';
+                continueGameButton.style.display = 'none';
+            }
+            moneyAmount.textContent = playerMoney;
+            
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
@@ -224,7 +238,10 @@ function addGameControls() {
             showCards(dealersHand);
             dealersPoints.innerHTML = dealersValue;
             dealersPoints.style.display = 'inline';
-            createRestartButton();
+
+            playerMoney += betAmount;
+            moneyAmount.textContent = playerMoney;
+            createContinueButton();
         }
     })
 
@@ -257,8 +274,9 @@ function addGameControls() {
 
         if (playersValue >= dealersValue) {
             gameOutcome.textContent = "You win!";
-
-            createRestartButton();
+            playerMoney += betAmount;
+            moneyAmount.textContent = playerMoney;
+            createContinueButton();
         }
 
 
@@ -266,13 +284,22 @@ function addGameControls() {
         if (dealersValue > 21) {
 
             gameOutcome.textContent = "Dealer Bust! You Win!";
-
-            createRestartButton();
+            playerMoney += betAmount;
+            moneyAmount.textContent = playerMoney;
+            createContinueButton();
         } else if (playersValue < dealersValue) {
 
             gameOutcome.textContent = "You lose!!"
+            playerMoney -= betAmount;
 
-            createRestartButton();
+            moneyAmount.textContent = playerMoney;
+            createContinueButton();
+            if (playerMoney <= 0) {
+                console.log("you went bankrupt!");
+                
+                restartGameButton.style.display = 'block';
+                continueGameButton.style.display = 'none';
+            }
         }
         showCards(dealersHand);
         dealersPoints.style.display = 'inline';
@@ -281,10 +308,10 @@ function addGameControls() {
 }
 
 // Reset all game values and info back to default
-function createRestartButton() {
+function createContinueButton() {
     gameControlsDiv.style.display = 'none'
-    restartGameButton.style.display = 'block';
-    restartGameButton.addEventListener("click", (event) => {
+    continueGameButton.style.display = 'block';
+    continueGameButton.addEventListener("click", (event) => {
         // Empty deckOfCards array.
         deckOfCards.splice(0)
 
@@ -309,7 +336,7 @@ function createRestartButton() {
 
         displayInfo.style.display = 'none';
         gameControlsDiv.style.display = 'none';
-        restartGameButton.style.display = 'none';
+        continueGameButton.style.display = 'none';
         startButton.style.display = "block";
     })
 }
@@ -318,7 +345,7 @@ function createRestartButton() {
 // Show a visual representation of hand's value to the user
 function showCards(hand) {
 
-    let titleOfCard = "images/";
+    let titleOfCard = "card_images/";
 
     // Clears hand before before showing udpated set of cards
     if (hand === playersHand) {
@@ -329,7 +356,7 @@ function showCards(hand) {
 
     // For each card in hand create an image representing its value and append to DOM
     hand.forEach((card) => {
-        titleOfCard = "images/";
+        titleOfCard = "card_images/";
         let valueOfCard = JSON.stringify(Object.keys(card))
         let suitOfCard = JSON.stringify(Object.values(card));
 
@@ -350,22 +377,28 @@ function showCards(hand) {
         // If this card is the first card the dealer has been dealt, hide it from the user temporarily by making the image the back of a card
         if (hand === dealersHand && firstDealerCard) {
             firstDealerCard = false;
-            image.setAttribute("src", "images/red_back.png");
+            image.setAttribute("src", "card_images/red_back.png");
 
         }
-        
+
     })
     return;
 }
 
-function betting() {
-    let bet = prompt("How much would you like to bet?");
-
-    moneyAmount.textContent = playerMoney;
+function createRestartButton() {
+    restartGameButton.addEventListener("click", (event) => {
+        console.log("restarting")
+        continueGameButton.style.display = 'block';
+        continueGameButton.click();
+        continueGameButton.style.display = 'none';
+        playerMoney = 1000;
+        moneyAmount.textContent = playerMoney;
+        restartGameButton.style.display = 'none';
+    })
 }
 
 
-
+createRestartButton();
 createDeck();
 startButton.addEventListener("click", startGame);
 addGameControls();

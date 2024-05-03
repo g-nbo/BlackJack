@@ -6,34 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Freeman&family=Lilita+One&family=Poetsen+One&display=swap" rel="stylesheet">
     <script defer src="script.js"></script>
+    <!-- Used google fonts, AnimateCSS, HaikeiApp, cssButtons, and icons8 -->
 </head>
 
 <body>
-    <h3 id="money">Money: <span id="moneyAmount">0</span></h3>
+    <section id="moneySection">
+        <img class="decorationImg" src="decoration_images/icons8-stack-of-coins (1).gif" alt="stack of coins">
+        <h3 id="money">Coins: <span id="moneyAmount">1000</span></h3>
+    </section>
+
     <div id="mainContainer">
+        <h1 id="mainHeader" class="poetsen-one-regular">BlackJack</h1>
+        <section id="homeSection">
+            <button id="startButton" class="bn5 poetsen-one-regular">Play Now!</button>
+        </section>
         <div id="displayInfo">
-            <h1><span id="gameOutcome"></span></h1>
-            <h2>Dealers Cards: <br /><span id="dealersCards"></span></h2>
-            <h2>Value: <span id="dealersPoints"></span> </h2>
-
-            <h2>Players Cards: <br /><span id="playersCards"></span></h2>
-            <h2>Value: <span id="playersPoints"></span> </h2>
+            <h1 class="freeman-regular"><span id="gameOutcome"></span></h1>
+            <h2 class="freeman-regular">Dealers Cards: <span id="dealersPoints"></span><br /><span id="dealersCards"></span></h2>
+            <h2 class="freeman-regular">Players Cards: <span id="playersPoints">?</span><br /><span id="playersCards"></span></h2>
         </div>
 
-        <div>
-            <button id="startButton">Start Game</button>
-        </div>
+
 
         <div id="gameControlsDiv">
-            <button id="hitButton" class="playerButtons">Hit</button>
-            <button id="standButton" class="playerButtons">Stand</button>
-            <button id="doubleDownButton" class="playerButtons">Double Down</button>
+            <button id="hitButton" class="playerButtons bn6">Hit</button>
+            <button id="standButton" class="playerButtons bn6">Stand</button>
+            <button id="doubleDownButton" class="playerButtons bn6">Double Down</button>
         </div>
-        <button id="restartGameButton" class="playerButtons">Restart Game</button>
-        
+        <button id="continueGameButton" class="playerButtons bn6">Continue</button>
+        <button id="restartGameButton" class="playerButtons bn6">Restart</button>
     </div>
-    
+
 </body>
 
 </html>
