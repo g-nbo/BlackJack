@@ -5,8 +5,9 @@ const suits = ['spade', 'heart', 'diamond', 'club'];
 // Players hand Variables
 const playersHand = [];
 let playerNumOfAces = 0;
-let playerMoney = 1000;
-let betAmount = 100;
+let playerMoney = 10000;
+let betAmount = 0;
+let originalBet = betAmount;
 
 // Dealer hand Variables
 const dealersHand = [];
@@ -23,19 +24,21 @@ const doubleDownButton = document.getElementById("doubleDownButton");
 const continueGameButton = document.getElementById("continueGameButton")
 const gameControlsDiv = document.getElementById("gameControlsDiv");
 const restartGameButton = document.getElementById("restartGameButton");
-const mainHeader = document.getElementById("mainHeader");
 
-// Info Display Variables
+
+// Display Variables
 const displayInfo = document.getElementById("displayInfo");
-
 const gameOutcome = document.getElementById("gameOutcome");
 const playersCards = document.getElementById("playersCards");
 const dealersCards = document.getElementById("dealersCards");
-
 const playersPoints = document.getElementById("playersPoints");
 const dealersPoints = document.getElementById("dealersPoints");
-
 const moneyAmount = document.getElementById("moneyAmount");
+const mainHeader = document.getElementById("mainHeader");
+const bettingScreen = document.getElementById("bettingScreen");
+const betInput = document.querySelector("#bettingScreen input");
+const betForm = document.querySelector("#bettingScreen form");
+
 
 
 // Creates a random number from 0 to our Max parameter.
@@ -57,6 +60,9 @@ function startGame() {
     dealToPlayer();
 
 
+
+    betAmount = originalBet;
+
     // Hide Start Game button from user
     startButton.style.display = "none";
     // Hide restart Game button
@@ -67,6 +73,8 @@ function startGame() {
     moneyAmount.textContent = playerMoney;
     // Hide Main Header
     mainHeader.style.display = 'none'
+    // Show betting screen
+    bettingScreen.style.display = 'flex'
 
     // Create a function that takes hand as a parameter and does these same things
     const dealerHandDisplay = showCards(dealersHand);
@@ -202,9 +210,6 @@ function addGameControls() {
         showCards(playersHand)
         playersPoints.innerHTML = playersValue;
 
-
-        dealersPoints.innerHTML = dealersValue;
-
         // If the value of players hand is greater than 21 end the game and tell the player they've bust
         if (playersValue > 21) {
             gameOutcome.textContent = "You Bust! You lose!";
@@ -225,7 +230,7 @@ function addGameControls() {
                 continueGameButton.style.display = 'none';
             }
             moneyAmount.textContent = playerMoney;
-            
+
 
             // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
@@ -296,7 +301,7 @@ function addGameControls() {
             createContinueButton();
             if (playerMoney <= 0) {
                 console.log("you went bankrupt!");
-                
+
                 restartGameButton.style.display = 'block';
                 continueGameButton.style.display = 'none';
             }
@@ -306,11 +311,17 @@ function addGameControls() {
 
     })
 
+    // Double users bet and give them a card
     doubleDownButton.addEventListener("click", (event) => {
-        let originalBet = betAmount;
-        betAmount = betAmount*2
-        hitButton.click();
-        betAmount = originalBet;
+        if (betAmount * 2 <= playerMoney) {
+            betAmount = betAmount * 2
+            console.log("looks good to me: ", "betAmount: ", betAmount, "playerMoney: ", playerMoney);
+            hitButton.click();
+        } else if (betAmount * 2 > playerMoney) {
+            console.log("You don't have enough to do this! ", "betAmount: ", betAmount, "playerMoney: ", playerMoney);
+        }
+
+
 
     })
 }
@@ -346,6 +357,9 @@ function createContinueButton() {
         gameControlsDiv.style.display = 'none';
         continueGameButton.style.display = 'none';
         startButton.style.display = "block";
+        startButton.innerText = 'Play Again!'
+        startButton.style.top = ''
+        mainHeader.style.display = 'block'
     })
 }
 
@@ -399,13 +413,32 @@ function createRestartButton() {
         continueGameButton.style.display = 'block';
         continueGameButton.click();
         continueGameButton.style.display = 'none';
-        playerMoney = 1000;
+        playerMoney = 10000;
         moneyAmount.textContent = playerMoney;
         restartGameButton.style.display = 'none';
+        mainHeader.style.display = 'block'
     })
 }
 
 
+function getBet() {
+    betForm.addEventListener("submit", (event) => {
+        
+        if (Number(betInput.value) && Number(betInput.value) <= playerMoney) {
+            console.log('this ran');
+            betAmount = parseInt(betInput.value);
+            bettingScreen.style.display = 'none'
+        } else if(Number(betInput.value) > playerMoney) {
+            console.log("You can't bet more coins than you own");
+        }
+    })
+}
+
+
+
+
+
+getBet();
 createRestartButton();
 createDeck();
 startButton.addEventListener("click", startGame);

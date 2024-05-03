@@ -16,7 +16,8 @@
 <body>
     <section id="moneySection">
         <img class="decorationImg" src="decoration_images/icons8-stack-of-coins (1).gif" alt="stack of coins">
-        <h3 id="money">Coins: <span id="moneyAmount">1000</span></h3>
+        <h3 id="money">Coins: <span id="moneyAmount">10,000</span></h3>
+        
     </section>
 
     <div id="mainContainer">
@@ -24,6 +25,18 @@
         <section id="homeSection">
             <button id="startButton" class="bn5 poetsen-one-regular">Play Now!</button>
         </section>
+
+        <div id="bettingScreen">
+            <div id="bettingTitleBox">
+                <h1>How many coins would you like to bet?</h1>
+                <img src="decoration_images/icons8-coins-48.png" alt="stack of coins">
+            </div>
+            <form action="" onsubmit="return false;">
+                <input type="text" />
+            </form>
+            
+        </div>
+
         <div id="displayInfo">
             <h1 class="freeman-regular"><span id="gameOutcome"></span></h1>
             <h2 class="freeman-regular">Dealers Cards: <span id="dealersPoints"></span><br /><span id="dealersCards"></span></h2>
@@ -33,12 +46,12 @@
 
 
         <div id="gameControlsDiv">
-            <button id="hitButton" class="playerButtons bn6">Hit</button>
-            <button id="standButton" class="playerButtons bn6">Stand</button>
-            <button id="doubleDownButton" class="playerButtons bn6">Double Down</button>
+            <button id="hitButton" class="playerButtons bn5">Hit</button>
+            <button id="standButton" class="playerButtons bn5">Stand</button>
+            <button id="doubleDownButton" class="playerButtons bn5">Double Down</button>
         </div>
-        <button id="continueGameButton" class="playerButtons bn6">Continue</button>
-        <button id="restartGameButton" class="playerButtons bn6">Restart</button>
+        <button id="continueGameButton" class="playerButtons bn5">Continue</button>
+        <button id="restartGameButton" class="playerButtons bn5">Restart</button>
     </div>
 
 </body>
