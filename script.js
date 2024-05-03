@@ -305,6 +305,14 @@ function addGameControls() {
         dealersPoints.style.display = 'inline';
 
     })
+
+    doubleDownButton.addEventListener("click", (event) => {
+        let originalBet = betAmount;
+        betAmount = betAmount*2
+        hitButton.click();
+        betAmount = originalBet;
+
+    })
 }
 
 // Reset all game values and info back to default
