@@ -88,10 +88,10 @@ function startGame() {
 
     // dealersCards.innerHTML = dealerHandDisplay;
     dealersPoints.innerHTML = '?';
-    displayInfo.style.display = "block";
+    // displayInfo.style.display = "block";
 
     // Show Game Controls Buttons to the user
-    gameControlsDiv.style.display = 'block'
+    // gameControlsDiv.style.display = 'block'
 
     // Show cards to the user
 
@@ -423,14 +423,17 @@ function createRestartButton() {
 
 function getBet() {
     betForm.addEventListener("submit", (event) => {
-        
+
         if (Number(betInput.value) && Number(betInput.value) <= playerMoney) {
             console.log('this ran');
             betAmount = parseInt(betInput.value);
-            bettingScreen.style.display = 'none'
-        } else if(Number(betInput.value) > playerMoney) {
+            bettingScreen.style.display = 'none';
+            gameControlsDiv.style.display = 'block';
+            displayInfo.style.display = 'block';
+        } else if (Number(betInput.value) > playerMoney) {
             console.log("You can't bet more coins than you own");
         }
+
     })
 }
 
