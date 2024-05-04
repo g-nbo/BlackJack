@@ -220,6 +220,7 @@ function addGameControls() {
                 console.log("you went bankrupt!");
                 restartGameButton.style.display = 'block';
                 continueGameButton.style.display = 'none';
+                gameOutcome.textContent = 'You went bankrupt!';
             }
             moneyAmount.textContent = playerMoney;
 
