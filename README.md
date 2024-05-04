@@ -23,6 +23,7 @@ This BlackJack Program uses many different technologies:
 - [HaikeiApp] - Background svg's. (https://haikei.app/)
 - [CssButtons] - Button animations. (https://cssbuttons.app/)
 - [Google Fonts] - Font Styles. (https://fonts.google.com/)
+- [ACBL] - Playing card images. (https://acbl.mybigcommerce.com/)
 - [Flexbox] - Layout method for arranging website. 
 - [JavaScript] - Scripting language that enables you to create dynamically updating content.
 - [HTML] - Standard markup language for creating web pages.
