@@ -77,7 +77,6 @@ function startGame() {
     // Show betting screen
     bettingScreen.style.display = 'flex'
 
-    // Create a function that takes hand as a parameter and does these same things
     const dealerHandDisplay = showCards(dealersHand);
     const playerHandDisplay = showCards(playersHand);
 
@@ -134,6 +133,7 @@ function dealToDealer() {
     return giveRandCard(dealersHand);
 }
 
+// Calculates the "value" of the hand that is passed into this function
 function getHandValue(hand, i) {
     let totalValue = 0;
     hand.forEach(card => {
@@ -170,8 +170,8 @@ function getHandValue(hand, i) {
                         }
                     })
                 }
-                value[0] = 11;
                 // Ace = 11 until hand value is over 21
+                value[0] = 11;
                 break;
             default:
                 value[0] = value[0];
@@ -224,7 +224,7 @@ function addGameControls() {
             moneyAmount.textContent = playerMoney;
 
 
-            // If the value of players hand is equal to 21 end the game and tell the player they've won
+        // If the value of players hand is equal to 21 end the game and tell the player they've won
         } else if (playersValue === 21) {
             gameOutcome.textContent = "BlackJack! You win!";
 
@@ -243,26 +243,35 @@ function addGameControls() {
     })
 
 
-    // // // //
+    // If player hits the stand button it is now the dealers turn to try and "beat" the player and keep dealing itself cards until it wins
     standButton.addEventListener("click", (event) => {
+        // Take away the ability for the player to continue hitting after hitting the stand button.
         hitButton.style.display = 'none'
 
         let playersValue = getHandValue(playersHand);
         let dealersValue = getHandValue(dealersHand);
 
+        // Evaluate the dealers hand and display it for the users eyes.
         dealersPoints.innerHTML = dealersValue;
 
 
 
 
-
+        // While dealers hand is not blackjack and is less than or equal to players value keep dealing cards to the dealer
+        // Player wins if dealers value is equal to theirs
         while (dealersValue < 21 && dealersValue <= playersValue && playersValue !== 21) {
             dealToDealer();
 
+            // Evaluate the dealers value after getting dealt a card
             dealersValue = getHandValue(dealersHand);
+
+            // If the dealers value is over 21 (losing), and the dealer has aces, 
+            // take away 10 value points for each ace that is making the dealer be over 21
+            // This essentially makes each ace that is making dealer "bust" worth 1 value point.
             for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
                 dealersValue -= 10;
             }
+            // Display this new info the user
             showCards(dealersHand);
             dealersPoints.innerHTML = dealersValue;
         }
@@ -381,6 +390,7 @@ function showCards(hand) {
 
         let image = document.createElement('img');
 
+        // Check which hand we should be appending the image too
         if (hand === playersHand) {
             playersCards.appendChild(image);
         } else if (hand === dealersHand) {
@@ -389,7 +399,8 @@ function showCards(hand) {
 
         image.setAttribute("src", titleOfCard)
 
-        // If this card is the first card the dealer has been dealt, hide it from the user temporarily by making the image the back of a card
+        // If this card is the first card the dealer has been dealt, 
+        // hide it from the user temporarily by making the image the back of a card
         if (hand === dealersHand && firstDealerCard) {
             firstDealerCard = false;
             image.setAttribute("src", "card_images/red_back.png");
@@ -400,6 +411,7 @@ function showCards(hand) {
     return;
 }
 
+// Restarts the entire game to complete default, even resetting the "money" or "coins"
 function createRestartButton() {
     restartGameButton.addEventListener("click", (event) => {
         console.log("restarting")
@@ -413,12 +425,12 @@ function createRestartButton() {
     })
 }
 
-
+// Allows the player to use the betScreen and input how much they would like to bet each round
 function getBet() {
     betForm.addEventListener("submit", (event) => {
 
         if (Number(betInput.value) && Number(betInput.value) <= playerMoney) {
-            betAmount = parseInt(betInput.value);
+            betAmount = Number(betInput.value);
             bettingScreen.style.display = 'none';
             gameControlsDiv.style.display = 'block';
             displayInfo.style.display = 'block';
@@ -433,16 +445,18 @@ function getBet() {
 
 
 
-getBet();
-createRestartButton();
+
 createDeck();
 startButton.addEventListener("click", startGame);
 addGameControls();
+getBet();
+createRestartButton();
+
 
 
 // Requirements go here:
 
-// Iterate over a collection of elements to accomplish some task.=
+// Iterate over a collection of elements to accomplish some task.
 playerButtons.forEach((button) => {
     console.log('this is a button')
 })

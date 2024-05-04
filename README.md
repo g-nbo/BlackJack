@@ -15,7 +15,7 @@ Try your luck: https://github.com/g-nbo/the_dom_sba
 - Stand will stop you from getting anymore cards, but it will now be the dealers turn to get closer to 21 then you without "busting".
 - Doubling Down will give you a new card like "Hit" but will double your betting amount if you have enough money to do so.
 - The game allows betting and will give you 10,000 in game coins to start with while keeping track of how many coins you win or lose throughout your playtime.
-- You will be given an option to restart your game if you lose all of your coins and "bankrupt".
+- You will be given an option to restart your game if you lose all of your coins and go "bankrupt".
 
 ## Tech
 This BlackJack Program uses many different technologies:
