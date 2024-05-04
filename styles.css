@@ -310,6 +310,67 @@ img {
     font-weight: 400;
     font-style: normal;
   }
+
+  /* media queries  */
+
+  @media only screen and (max-width: 1362px) {
+    #bettingScreen {
+      width: 60%;
+    }
+  }
+
+  @media only screen and (max-width: 910px) {
+    #bettingScreen {
+      width: 70%;
+    }
+  }
+
+  @media only screen and (max-width: 782px) {
+    #bettingScreen {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (max-width: 684px) {
+    #bettingScreen {
+      width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 626px) {
+    img {
+      width: 30%;
+    }
+  }
+
+  @media only screen and (max-width: 546px) {
+    body {
+      background-repeat: repeat;
+    }
+    #bettingScreen {
+      width: 100%;
+      
+    }
+
+    #bettingScreen input {
+      width: 100%;
+    }
+
+    #bettingScreen h1 {
+      font-size: 150%;
+    }
+  }
+
+  @media only screen and (max-width: 402px) {
+    #mainHeader {
+      font-size: 430%;
+    }
+
+    #bettingScreen h1 {
+      font-size: 110%;
+    }
+
+  }
   
   
   

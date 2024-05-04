@@ -458,7 +458,7 @@ createRestartButton();
 
 // Iterate over a collection of elements to accomplish some task.
 playerButtons.forEach((button) => {
-    console.log('this is a button')
+    console.log('this is a button');
 })
 // Use at least two Browser Object Model (BOM) properties or methods.
 setInterval(() => {
@@ -466,7 +466,7 @@ setInterval(() => {
         console.log("very slow console log");
     }, 0);
     
-}, 10000000000000);
+}, 10000000);
 // Use the parent-child-sibling relationship to navigate between elements at least once (firstChild, lastChild, parentNode, nextElementSibling, etc.).
 console.log(startButton.parentNode)
 // Use the DocumentFragment interface or HTML templating with the cloneNode method to create templated content. 
