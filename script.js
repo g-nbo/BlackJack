@@ -26,6 +26,7 @@ const gameControlsDiv = document.getElementById("gameControlsDiv");
 const restartGameButton = document.getElementById("restartGameButton");
 
 
+
 // Display Variables
 const displayInfo = document.getElementById("displayInfo");
 const gameOutcome = document.getElementById("gameOutcome");
@@ -83,17 +84,8 @@ function startGame() {
     const playersValue = getHandValue(playersHand);
     const dealersValue = getHandValue(dealersHand);
 
-    // playersCards.innerHTML = playerHandDisplay;
     playersPoints.innerHTML = playersValue;
-
-    // dealersCards.innerHTML = dealerHandDisplay;
     dealersPoints.innerHTML = '?';
-    // displayInfo.style.display = "block";
-
-    // Show Game Controls Buttons to the user
-    // gameControlsDiv.style.display = 'block'
-
-    // Show cards to the user
 
 }
 
@@ -251,7 +243,7 @@ function addGameControls() {
     })
 
 
-    // 
+    // // // //
     standButton.addEventListener("click", (event) => {
         hitButton.style.display = 'none'
 
@@ -304,6 +296,7 @@ function addGameControls() {
 
                 restartGameButton.style.display = 'block';
                 continueGameButton.style.display = 'none';
+                gameOutcome.textContent = 'You went bankrupt!'
             }
         }
         showCards(dealersHand);
@@ -332,11 +325,11 @@ function createContinueButton() {
     continueGameButton.style.display = 'block';
     continueGameButton.addEventListener("click", (event) => {
         // Empty deckOfCards array.
-        deckOfCards.splice(0)
+        deckOfCards.splice(0);
 
         // Empty player and dealers hands
-        playersHand.splice(0)
-        dealersHand.splice(0)
+        playersHand.splice(0);
+        dealersHand.splice(0);
 
         // push a new set of 52 cards back in to deckOfCards.
         createDeck();
@@ -425,13 +418,12 @@ function getBet() {
     betForm.addEventListener("submit", (event) => {
 
         if (Number(betInput.value) && Number(betInput.value) <= playerMoney) {
-            console.log('this ran');
             betAmount = parseInt(betInput.value);
             bettingScreen.style.display = 'none';
             gameControlsDiv.style.display = 'block';
             displayInfo.style.display = 'block';
         } else if (Number(betInput.value) > playerMoney) {
-            console.log("You can't bet more coins than you own");
+            console.log("You can't bet more coins than you own!");
         }
 
     })
@@ -448,5 +440,24 @@ startButton.addEventListener("click", startGame);
 addGameControls();
 
 
+// Requirements go here:
+
+// Iterate over a collection of elements to accomplish some task.=
+playerButtons.forEach((button) => {
+    console.log('this is a button')
+})
+// Use at least two Browser Object Model (BOM) properties or methods.
+setInterval(() => {
+    setTimeout(() => {
+        console.log("very slow console log");
+    }, 0);
+    
+}, 10000000000000);
+// Use the parent-child-sibling relationship to navigate between elements at least once (firstChild, lastChild, parentNode, nextElementSibling, etc.).
+console.log(startButton.parentNode)
+// Use the DocumentFragment interface or HTML templating with the cloneNode method to create templated content. 
+const template = document.querySelector("#requirement");
+const clone = template.content.cloneNode(true);
+console.log(clone);
 
 
