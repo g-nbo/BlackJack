@@ -49,7 +49,7 @@ function getRandNum(max) {
 
 // Creates a random number from 0 to the size of our deck.
 function getRandCard(deck) {
-    return deckOfCards[getRandNum(deck.length)]
+    return deckOfCards[getRandNum(deck.length - 1)]
 }
 
 function startGame() {
