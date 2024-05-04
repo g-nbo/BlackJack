@@ -10,10 +10,6 @@ body {
     
 }
 
-#visual {
-    
-}
-
 #mainContainer {
     display: flex;
     flex-direction: column;
