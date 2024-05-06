@@ -255,7 +255,9 @@ function addGameControls() {
         // Evaluate the dealers hand and display it for the users eyes.
         dealersPoints.innerHTML = dealersValue;
 
-
+        for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+            dealersValue -= 10;
+        }
 
 
         // While dealers hand is not blackjack and is less than or equal to players value keep dealing cards to the dealer
