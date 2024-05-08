@@ -4,7 +4,7 @@
 This program allows you to enjoy multiple games of blackjack while betting with in-game currency. 
 Win or Lose you're sure to have fun! 
 
-Try your luck: https://g-nbo.github.io/the_dom_sba/
+Try your luck: https://g-nbo.github.io/BlackJack/
 ## Features
 
 - Getting black jack is the name of the game, if player hits 21 they automatically win. 
