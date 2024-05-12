@@ -10,9 +10,11 @@ let betAmount = 0;
 let originalBet = betAmount;
 
 // Dealer hand Variables
-const dealersHand = [];
+let dealersHand = [];
 let dealerNumOfAces = 0;
 let firstDealerCard = true;
+
+
 
 // Element Variables
 // Player Buttons
@@ -196,7 +198,7 @@ function addGameControls() {
         let dealersValue = getHandValue(dealersHand);
 
 
-        for (i = 0; i < playerNumOfAces && playersValue > 21; i++) {
+        for (let i = 0; i < playerNumOfAces && playersValue > 21; i++) {
             playersValue -= 10;
         }
         showCards(playersHand)
@@ -207,7 +209,7 @@ function addGameControls() {
             gameOutcome.textContent = "You Bust! You lose!";
 
             dealersValue = getHandValue(dealersHand);
-            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+            for (let i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
                 dealersValue -= 10;
             }
             showCards(dealersHand);
@@ -230,7 +232,7 @@ function addGameControls() {
             gameOutcome.textContent = "BlackJack! You win!";
 
             dealersValue = getHandValue(dealersHand);
-            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+            for (let i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
                 dealersValue -= 10;
             }
             showCards(dealersHand);
@@ -255,11 +257,16 @@ function addGameControls() {
         // Evaluate the dealers hand and display it for the users eyes.
         dealersPoints.innerHTML = dealersValue;
 
-        for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+        for (let i = 0; dealerNumOfAces && dealersValue > 21; i++) {
             dealersValue -= 10;
+            dealerNumOfAces -= 1;
+            showCards(dealersHand);
+            dealersPoints.innerHTML = dealersValue;  
         }
 
+        
 
+        
         // While dealers hand is not blackjack and is less than or equal to players value keep dealing cards to the dealer
         // Player wins if dealers value is equal to theirs
         while (dealersValue < 21 && dealersValue <= playersValue && playersValue !== 21) {
@@ -271,10 +278,11 @@ function addGameControls() {
             // If the dealers value is over 21 (losing), and the dealer has aces, 
             // take away 10 value points for each ace that is making the dealer be over 21
             // This essentially makes each ace that is making dealer "bust" worth 1 value point.
-            for (i = 0; i < dealerNumOfAces && dealersValue > 21; i++) {
+            for (let i = 0; dealerNumOfAces && dealersValue > 21; i++) {
                 dealersValue -= 10;
+                dealerNumOfAces -= 1;
             }
-            // Display this new info the user
+            // Display this new info to the user
             showCards(dealersHand);
             dealersPoints.innerHTML = dealersValue;
         }
